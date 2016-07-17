@@ -1,0 +1,48 @@
+    .pos 0
+
+Main:
+    irmovq Stack, %rsp
+	irmovq ele1, %rdi
+	call max_list
+	halt
+
+max_list:
+	irmovq $0, %rax
+	jmp test
+
+Loop:
+	mrmovq (%rdi), %r10
+	mrmovq 8(%rdi), %r11
+
+	pushq %rax
+	subq %r10, %rax
+	popq %rax
+
+	cmovl %r10, %rax
+
+	rrmovq %r11, %rdi
+
+test:
+    andq %rdi, %rdi
+    jne Loop
+    ret
+
+
+
+.align 8
+ele1:
+	.quad 0x00a
+	.quad ele2
+ele2:
+	.quad 0x0b0
+	.quad ele3
+ele3:
+	.quad 0xc00
+	.quad ele4
+ele4:
+    .quad 0x030
+    .quad 0
+
+
+	.pos 0x500
+Stack:

@@ -1,0 +1,46 @@
+# Initial code
+        irmovq stack,%rsp
+        irmovq $3,%rdi
+        irmovq A,%rsi
+        irmovq B,%rdx
+        irmovq C,%rcx
+        call matrix_and_xor 
+        halt
+
+.align 8
+# Matrix A
+A:
+        .quad 0x001
+        .quad 0x002
+        .quad 0x003
+        .quad 0x004
+        .quad 0x005
+        .quad 0x006
+        .quad 0x007
+        .quad 0x008
+        .quad 0x009
+
+# Matrix B
+B:
+        .quad 0x009
+        .quad 0x008
+        .quad 0x007
+        .quad 0x006
+        .quad 0x005
+        .quad 0x004
+        .quad 0x003
+        .quad 0x002
+        .quad 0x001
+
+# Matrix C
+C:
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+        .quad 0x000
+

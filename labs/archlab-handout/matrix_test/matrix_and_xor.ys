@@ -1,0 +1,84 @@
+matrix_and_xor:
+    pushq %rbp
+    pushq %r12
+    pushq %r13
+    pushq %r14
+    pushq %rbx
+
+    irmovq $0, %rax
+    irmovq $1, %r12 # constant 1
+
+    xorq %r10, %r10 # i = 0 
+    jmp testi
+
+loopi:
+    xorq %r11, %r11 # j = 0
+    jmp testj
+
+loopj:
+    pushq %rax
+    xorq %r13, %r13
+    xorq %rax, %rax
+    jmp testk
+
+loopk:
+    addq %rdi, %r13
+    addq %r12, %rax
+
+testk:
+    pushq %rax
+    subq %r10, %rax
+    popq %rax
+    jne loopk
+
+    popq %rax
+
+    addq %r11, %r13 # offset = i * 8 + j
+    addq %r13, %r13
+    addq %r13, %r13
+    addq %r13, %r13
+
+    pushq %r13
+    addq %rsi, %r13
+    rrmovq %r13, %r14 # address of A
+    mrmovq (%r14), %r14
+    popq %r13
+
+    pushq %r13
+    addq %rdx, %r13
+    rrmovq %r13, %rbp # address of B
+    mrmovq (%rbp), %rbp
+    popq %r13
+
+    andq %r14, %rbp # C[i][j]
+
+    pushq %r13
+    addq %rcx, %r13
+    rrmovq %r13, %rbx # address of C
+    popq %r13
+
+    rmmovq %rbp, (%rbx)
+    xorq %rbp, %rax
+
+    addq %r12, %r11 # ++j
+
+testj:
+    pushq %r11
+    subq %rdi, %r11
+    popq %r11
+    jne loopj
+
+    addq %r12, %r10 # ++i
+
+testi:
+    pushq %r10
+    subq %rdi, %r10
+    popq %r10
+    jne loopi
+
+    popq %rbx
+    popq %r14
+    popq %r13
+    popq %r12
+    popq %rbp
+    ret

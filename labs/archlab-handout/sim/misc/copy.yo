@@ -1,0 +1,63 @@
+0x000:                      | .pos 0
+                            | 
+0x000:                      | Main:
+0x000: 30f40010000000000000 |     irmovq Stack, %rsp
+                            | 
+0x00a: 30f20300000000000000 |     irmovq $3, %rdx
+0x014: 30f79800000000000000 |     irmovq A, %rdi
+0x01e: 30f6b000000000000000 |     irmovq B, %rsi
+0x028: 803200000000000000   |     call copy_block
+                            | 
+0x031: 00                   |     halt
+                            | 
+0x032:                      | copy_block:
+0x032: a05f                 |     pushq %rbp
+0x034: a0cf                 |     pushq %r12
+0x036: a0df                 |     pushq %r13
+0x038: a0ef                 |     pushq %r14
+                            | 
+0x03a: 30f00000000000000000 |     irmovq $0, %rax
+0x044: 30fcffffffffffffffff |     irmovq $-1, %r12
+0x04e: 30fd0800000000000000 |     irmovq $8, %r13
+                            | 
+0x058: 707d00000000000000   |     jmp testi
+                            | 
+0x061:                      | loopi:
+0x061: 50e70000000000000000 |     mrmovq (%rdi), %r14
+0x06b: 40e60000000000000000 |     rmmovq %r14, (%rsi)
+                            | 
+0x075: 60d7                 |     addq %r13, %rdii
+0x077: 60d6                 |     addq %r13, %rsi
+                            | 
+0x079: 63e0                 |     xorq %r14, %rax
+                            | 
+0x07b: 60c2                 |     addq %r12, %rdx # --len
+                            | 
+0x07d:                      | testi:
+0x07d: a02f                 |     pushq %rdx
+0x07f: 6222                 |     andq %rdx, %rdx
+0x081: b02f                 |     popq %rdx
+0x083: 746100000000000000   |     jne loopi
+                            | 
+0x08c: b0ef                 |     popq %r14
+0x08e: b0df                 |     popq %r13
+0x090: b0cf                 |     popq %r12
+0x092: b05f                 |     popq %rbp
+0x094: 90                   |     ret
+                            | 
+                            | 
+0x098:                      | .align 8
+                            | # Matrix A
+0x098:                      | A:
+0x098: 0a00000000000000     |         .quad 0x00a
+0x0a0: b000000000000000     |         .quad 0x0b0
+0x0a8: 000e000000000000     |         .quad 0xe00
+                            | 
+                            | # Matrix B
+0x0b0:                      | B:
+0x0b0: 1101000000000000     |         .quad 0x111
+0x0b8: 2202000000000000     |         .quad 0x222
+0x0c0: 3303000000000000     |         .quad 0x333
+                            | 
+0x1000:                      |     .pos 0x1000 # This program is too long so I need more room for my code in memory
+0x1000:                      | Stack:

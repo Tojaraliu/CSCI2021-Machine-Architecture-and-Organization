@@ -1,0 +1,48 @@
+0x000:                      |     .pos 0
+                            | 
+0x000:                      | Main:
+0x000: 30f40005000000000000 |     irmovq Stack, %rsp
+0x00a: 30f76000000000000000 | 	irmovq ele1, %rdi
+0x014: 801e00000000000000   | 	call max_list
+0x01d: 00                   | 	halt
+                            | 
+0x01e:                      | max_list:
+0x01e: 30f00000000000000000 | 	irmovq $0, %rax
+0x028: 704f00000000000000   | 	jmp test
+                            | 
+0x031:                      | Loop:
+0x031: 50a70000000000000000 | 	mrmovq (%rdi), %r10
+0x03b: 50b70800000000000000 | 	mrmovq 8(%rdi), %r11
+                            | 
+0x045: a00f                 | 	pushq %rax
+0x047: 61a0                 | 	subq %r10, %rax
+0x049: b00f                 | 	popq %rax
+                            | 
+0x04b: 22a0                 | 	cmovl %r10, %rax
+                            | 
+0x04d: 20b7                 | 	rrmovq %r11, %rdi
+                            | 
+0x04f:                      | test:
+0x04f: 6277                 |     andq %rdi, %rdi
+0x051: 743100000000000000   |     jne Loop
+0x05a: 90                   |     ret
+                            | 
+                            | 
+                            | 
+0x060:                      | .align 8
+0x060:                      | ele1:
+0x060: 0a00000000000000     | 	.quad 0x00a
+0x068: 7000000000000000     | 	.quad ele2
+0x070:                      | ele2:
+0x070: b000000000000000     | 	.quad 0x0b0
+0x078: 8000000000000000     | 	.quad ele3
+0x080:                      | ele3:
+0x080: 000c000000000000     | 	.quad 0xc00
+0x088: 9000000000000000     | 	.quad ele4
+0x090:                      | ele4:
+0x090: 3000000000000000     |     .quad 0x030
+0x098: 0000000000000000     |     .quad 0
+                            | 
+                            | 
+0x500:                      | 	.pos 0x500
+0x500:                      | Stack:

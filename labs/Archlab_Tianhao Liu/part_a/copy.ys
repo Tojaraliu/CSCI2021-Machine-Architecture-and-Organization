@@ -1,0 +1,63 @@
+.pos 0
+
+Main:
+    irmovq Stack, %rsp
+
+    irmovq $3, %rdx
+    irmovq A, %rdi
+    irmovq B, %rsi
+    call copy_block
+
+    halt
+
+copy_block:
+    pushq %rbp
+    pushq %r12
+    pushq %r13
+    pushq %r14
+
+    irmovq $0, %rax
+    irmovq $-1, %r12
+    irmovq $8, %r13
+
+    jmp testi
+
+loopi:
+    mrmovq (%rdi), %r14
+    rmmovq %r14, (%rsi)
+
+    addq %r13, %rdii
+    addq %r13, %rsi
+
+    xorq %r14, %rax
+
+    addq %r12, %rdx # --len
+
+testi:
+    pushq %rdx
+    andq %rdx, %rdx
+    popq %rdx
+    jne loopi
+
+    popq %r14
+    popq %r13
+    popq %r12
+    popq %rbp
+    ret
+
+
+.align 8
+# Matrix A
+A:
+        .quad 0x00a
+        .quad 0x0b0
+        .quad 0xc00
+
+# Matrix B
+B:
+        .quad 0x111
+        .quad 0x222
+        .quad 0x333
+
+    .pos 0x1000 # This program is too long so I need more room for my code in memory
+Stack:
